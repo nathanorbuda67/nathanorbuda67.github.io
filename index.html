@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Order Form</title>
+</head>
+<body>
+
+<!-- title -->
+<h1>Food Order Form</h1>
+
+<!-- calls printReceipt() when submitted -->
+<form onsubmit="return printReceipt();">
+    
+    <!-- name input -->
+    <label for="name">Full Name:</label> <br>
+    <input type="text" id="name" name="names" required><br><br>
+
+    <!-- grade and section input -->
+    <label for="gradeandsect">Grade and Section:</label><br>
+    <input type="text" id="gradeandsect" name="gradeandsection" required><br><br>
+
+    <!-- food selection -->
+    <label for="foodtype">Food:</label><br>
+    <select name="food" id="foodtype">
+        <option value="Chicken meal">Chicken meal</option>
+        <option value="Pork meal">Pork meal</option>
+        <option value="Beef meal">Beef meal</option>
+    </select><br><br>
+
+    <!-- quantity input-->
+    <label for="quantisay">Quantity (Max of 5):</label><br>
+    <input type="number" id="quantisay" name="quantiddies" min="1" max="5" required><br><br>
+
+    <!-- who's who -->
+    <label for="studentornot">Customer Type:</label><br>
+    <select name="type" id="studentornot">
+        <option value="Student">Student</option>
+        <option value="Non-Student">Non-Student</option>
+    </select><br><br>
+
+    <!--button to submit -->
+    <input type="submit" value="Submit"><br><br>
+</form>
+
+<!--displays receipt summary-->
+<h2>Receipt Summary:</h2>
+<div id="receipt"></div>
+
+<script>
+
+    // main function to print summary
+    function printReceipt() {
+
+        // GET VALUES FROM FORM
+        let name = document.getElementById("name").value;
+        let grade = document.getElementById("gradeandsect").value;
+        let foodtype = document.getElementById("foodtype").value;
+        let quantity = parseInt(document.getElementById("quantisay").value);
+        let studentornot = document.getElementById("studentornot").value;
+
+        // function to calculate price
+        function price(foodtype, quantity) {
+            let price = 0;
+
+            switch (foodtype) {
+                case "Chicken meal":
+                    price = 75;
+                    break;
+                case "Pork meal":
+                    price = 85;
+                    break;
+                case "Beef meal":
+                    price = 105;
+                    break;
+                default:
+                    price = 0;
+            }
+
+            return price * quantity;
+        }
+
+        // function to calculate discount
+        function discount(total, studentornot) {
+            let discount = 0;
+
+            // STUDENTS GET 20% DISCOUNT
+            if (studentornot === "Student") {
+                discount = total * 0.20;
+            }
+
+            return discount;
+        }
+
+        // numbers and calculations
+        let total = price(foodtype, quantity);
+        let discountAmount = discount(total, studentornot);
+        let finalTotal = total - discountAmount;
+
+        // displays receipt summary
+        document.getElementById("receipt").innerHTML = `
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Grade & Section:</strong> ${grade}</p>
+            <p><strong>Food Ordered:</strong> ${foodtype}</p>
+            <p><strong>Quantity:</strong> ${quantity}</p>
+            <p><strong>Customer Type:</strong> ${studentornot}</p>
+            <hr>
+            <p><strong>Total Price:</strong> ₱${total}</p>
+            <p><strong>Discount:</strong> ₱${discountAmount}</p>
+            <p><strong>Final Total:</strong> ₱${finalTotal}</p>
+        `;
+
+        // so the page doesnt refresh after submission
+        return false;
+    }
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
